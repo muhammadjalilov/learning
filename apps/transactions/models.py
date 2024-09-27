@@ -6,8 +6,7 @@ from apps.shared.models import TimeStampedModel
 
 class CreditCard(TimeStampedModel):
     card_number = models.CharField(max_length=16, unique=True)
-    month = models.CharField(max_length=2)
-    year = models.CharField(max_length=4)
+    expired_date = models.DateField()
     cvv = models.CharField(max_length=3)
 
     class Meta:
@@ -23,7 +22,7 @@ class BillingAddress(TimeStampedModel):
     country = models.CharField(max_length=30)
     address = models.TextField()
     credit_cards = models.ManyToManyField(CreditCard, related_name='billing_addresses')
-    user = models.ForeignKey('apps.Account', on_delete=models.CASCADE, related_name='billing_addresses')
+    user = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='billing_addresses')
 
     class Meta:
         verbose_name = 'Billing Address'
@@ -40,7 +39,7 @@ class Invoice(TimeStampedModel):
     billing_address = models.ForeignKey(BillingAddress, on_delete=models.CASCADE, related_name='invoices')
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='invoices')
     credit_card = models.ForeignKey(CreditCard, on_delete=models.CASCADE, related_name='invoices')
-    user = models.ForeignKey('apps.Account', on_delete=models.CASCADE, related_name='invoices')
+    user = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='invoices')
 
     class Meta:
         verbose_name = 'Invoice'
@@ -53,7 +52,7 @@ class Invoice(TimeStampedModel):
 
 class Transactions(TimeStampedModel):
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey('apps.Account', on_delete=models.CASCADE, related_name='transactions')
+    user = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='transactions')
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name='transactions')
 
     class Meta:

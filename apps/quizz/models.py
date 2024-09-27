@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.shared.models import SlugStampedModel
+from apps.shared.models import SlugStampedModel, TimeStampedModel
 
 
 class Quiz(SlugStampedModel):
@@ -13,26 +13,25 @@ class Quiz(SlugStampedModel):
     def __str__(self):
         return self.name
 
-class Question(SlugStampedModel):
-    # name = Question
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE)
+class Question(TimeStampedModel):
+    question = models.CharField(max_length=256)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE,related_name='questions')
+    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE,related_name='questions')
 
     class Meta:
         verbose_name = 'Question'
         verbose_name_plural = 'Questions'
 
     def __str__(self):
-        return self.name
+        return self.question
 
 
-class Choice(SlugStampedModel):
-    name = None
+class Choice(TimeStampedModel):
     choice_1 = models.TextField(verbose_name="Choice 1")
     choice_2 = models.TextField(verbose_name="Choice 2")
     choice_3 = models.TextField(verbose_name="Choice 3")
     right_answer = models.SmallIntegerField(verbose_name="Right answer")
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE,related_name='choices')
 
     class Meta:
         verbose_name = 'Choice'

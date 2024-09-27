@@ -1,11 +1,10 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from apps.shared.models import SlugStampedModel
+from apps.shared.models import SlugStampedModel, TimeStampedModel
 
 
-class Account(AbstractUser, SlugStampedModel):
-    name = None
+class Account(AbstractUser, TimeStampedModel):
     website = models.CharField(max_length=128)
     avatar = models.ImageField(upload_to='avatars/')
     is_subscribed_newsletter = models.BooleanField(default=False)

@@ -29,17 +29,15 @@ class Certificate(SlugStampedModel):
         verbose_name_plural = 'Certificates'
 
     def __str__(self):
-        return str(self.id)
+        return str(self.name)
+
 
 class Reward(SlugStampedModel):
-    certificate = models.ForeignKey(Certificate, on_delete=models.CASCADE)
+    certificate = models.ForeignKey(Certificate, on_delete=models.CASCADE, related_name='rewards')
 
     class Meta:
         verbose_name = 'Reward'
         verbose_name_plural = 'Rewards'
 
     def __str__(self):
-        return str(self.id)
-
-
-
+        return str(self.name)
