@@ -13,7 +13,7 @@ class Course(SlugStampedModel):
     end_date = models.DateField()
     rating = models.IntegerField()
     instructor = models.ForeignKey('apps.Instructor', on_delete=models.CASCADE, related_name='courses')
-    category = models.ForeignKey()
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="courses")
 
     def __str__(self):
         return self.name
