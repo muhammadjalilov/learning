@@ -8,7 +8,7 @@ class Account(AbstractUser, TimeStampedModel):
     website = models.CharField(max_length=128)
     avatar = models.ImageField(upload_to='avatars/')
     is_subscribed_newsletter = models.BooleanField(default=False)
-    card = models.ForeignKey('apps.CreditCard', on_delete=models.SET_NULL, null=True, blank=True)
+    card = models.ForeignKey('transactions.CreditCard', on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Account'

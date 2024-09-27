@@ -4,8 +4,6 @@ from apps.account.models import Account
 
 
 class Instructor(Account):
-    courses = models.ManyToManyField('courses.Course', related_name='instructors')
-
     class Meta:
         verbose_name = 'Instructor'
         verbose_name_plural = 'Instructors'

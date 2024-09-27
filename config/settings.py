@@ -24,9 +24,9 @@ SECRET_KEY = "django-insecure-#(wphlmeqf6^eeadzc)!x$#5y1uptn2i(^k$st_$zws-w$)=mf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
-AUTH_USER_MODEL = 'apps.accounts.Account'
+AUTH_USER_MODEL = 'account.Account'
 
 # Application definition
 
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'apps.quizz',
     'apps.shared',
     'apps.students',
-    'apps.transactions'
+    'apps.transactions',
 ]
 
 MIDDLEWARE = [
