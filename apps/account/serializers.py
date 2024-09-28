@@ -12,6 +12,10 @@ class AccountSerializer(serializers.ModelSerializer):
         model = Account
         fields = ['username', 'first_name', 'last_name', 'website', 'avatar', 'is_subscribed_newsletter', 'card',
                   'password', 'confirm_password']
+        extra_kwargs = {
+            'password': {"write_only": True},
+            'confirm_password': {"write_only": True},
+        }
 
     def validate(self, attrs):
         password = attrs.get('password')
@@ -29,5 +33,3 @@ class AccountSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         return user
-
-
