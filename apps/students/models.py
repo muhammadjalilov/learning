@@ -3,10 +3,11 @@ from django.db import models
 from apps.account.choices import AccountSubscriptions
 from apps.account.models import Account
 from apps.courses.models import Course
-from apps.shared.models import SlugStampedModel
+from apps.shared.models import SlugStampedModel, TimeStampedModel
 
 
-class Student(Account):
+class Student(TimeStampedModel):
+    account = models.OneToOneField('account.Account',on_delete=models.CASCADE)
     subscription_type = models.CharField(max_length=128, choices=AccountSubscriptions,
                                          default=AccountSubscriptions.STARTER)
     courses = models.ManyToManyField(Course)
@@ -16,7 +17,7 @@ class Student(Account):
         verbose_name_plural = 'Students'
 
     def __str__(self):
-        return str(self.get_full_name())
+        return str(self.account.get_full_name())
 
 
 class Certificate(SlugStampedModel):
