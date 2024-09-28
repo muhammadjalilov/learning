@@ -1,3 +1,15 @@
 from django.shortcuts import render
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
 
-# Create your views here.
+from apps.instructors.serializers import InstructorSerializer
+from .models  import Instructor
+
+
+class InstructorCreateAPIView(CreateAPIView):
+    queryset = Instructor.objects.all()
+    serializer_class = InstructorSerializer
+
+
+class InstructorDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Instructor.objects.all()
+    serializer_class = InstructorSerializer
