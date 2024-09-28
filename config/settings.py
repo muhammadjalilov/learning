@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # external apps
     'rest_framework',
+    'drf_yasg',
     # local apps
     'apps.account',
     'apps.chat',
