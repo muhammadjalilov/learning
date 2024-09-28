@@ -11,4 +11,4 @@ class Instructor(TimeStampedModel):
         verbose_name_plural = 'Instructors'
 
     def __str__(self):
-        return str(self.get_full_name())
+        return str(self.account.get_full_name())
