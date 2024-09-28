@@ -23,5 +23,6 @@ from config.swagger import swagger_urlpatterns
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('api/',include('apps.instructors.urls.v1')),
+    path('api/',include('apps.students.urls.v1')),
 ]
 urlpatterns += swagger_urlpatterns

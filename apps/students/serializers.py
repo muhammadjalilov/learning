@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
-from apps.account.models import Account
 from apps.account.serializers import AccountSerializer
-from apps.instructors.models import Instructor
+from apps.students.models import Student
 
 
-class InstructorSerializer(serializers.ModelSerializer):
+class StudentSerializer(serializers.ModelSerializer):
     account = AccountSerializer()
 
     class Meta:
-        model = Instructor
-        fields = ['account']
+        model = Student
+        fields = ['account', 'subscription_type']
+
 
     def create(self, validated_data):
         account_data = validated_data.pop('account', None)
@@ -20,10 +20,10 @@ class InstructorSerializer(serializers.ModelSerializer):
         account = account_serializer.save()
         account.save()
 
-        instructor = Instructor.objects.create(account=account)
-        instructor.save()
+        student = Student.objects.create(account=account)
+        student.save()
 
-        return instructor
+        return student
 
     def update(self, instance, validated_data):
         account_data = validated_data.pop('account', None)
@@ -38,4 +38,4 @@ class InstructorSerializer(serializers.ModelSerializer):
                 account.set_password('password')
                 account.save()
 
-        return instance
+            return instance
