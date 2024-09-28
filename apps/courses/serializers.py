@@ -8,6 +8,7 @@ class CoursesSerializer(serializers.ModelSerializer):
         model = Course
         exclude = 'created_at', 'updated_at'
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
