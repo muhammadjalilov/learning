@@ -1,8 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 
-from apps.courses.models import Course
+from apps.courses.models import Course, Category, Chapter, Topic
 from apps.courses.paginations import CustomPagination
-from apps.courses.serializers import CoursesSerializer
+from apps.courses.serializers import CoursesSerializer, CategorySerializer, ChapterSerializer, TopicSerializer
 
 
 class CoursesViewSet(ModelViewSet):
@@ -23,4 +23,16 @@ class CoursesViewSet(ModelViewSet):
             queryset = queryset.filter(price__lte=price_max)
         return queryset
 
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+class ChapterViewSet(ModelViewSet):
+    queryset = Chapter.objects.all()
+    serializer_class = ChapterSerializer
+
+class TopicViewSet(ModelViewSet):
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
 
