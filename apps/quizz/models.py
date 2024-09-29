@@ -16,7 +16,6 @@ class Quiz(SlugStampedModel):
 class Question(TimeStampedModel):
     question = models.CharField(max_length=256)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE,related_name='questions')
-    course = models.ForeignKey('courses.Course', on_delete=models.CASCADE,related_name='questions')
 
     class Meta:
         verbose_name = 'Question'
