@@ -39,3 +39,9 @@ class InstructorSerializer(serializers.ModelSerializer):
                 account.save()
 
         return instance
+
+class InstructorListSerializer(serializers.ModelSerializer):
+    account = AccountSerializer()
+    class Meta:
+        model = Instructor
+        fields = ['account']

@@ -1,8 +1,11 @@
 from django.shortcuts import render
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView
+from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, ListAPIView
+from rest_framework.permissions import IsAuthenticated
 
-from apps.instructors.serializers import InstructorSerializer
-from .models  import Instructor
+from apps.instructors.serializers import InstructorSerializer, InstructorListSerializer
+from .models import Instructor
+from ..account.permissions import IsOwner
+from ..courses.models import Course
 
 
 class InstructorCreateAPIView(CreateAPIView):
@@ -13,3 +16,11 @@ class InstructorCreateAPIView(CreateAPIView):
 class InstructorDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Instructor.objects.all()
     serializer_class = InstructorSerializer
+    permission_classes = [IsAuthenticated, IsOwner]
+
+
+class InstructorCoursesListAPIView(ListAPIView):
+    serializer_class = InstructorListSerializer
+
+    def get_queryset(self):
+        return Course.objects.filter(instructor=self.request.user.instructor)

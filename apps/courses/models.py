@@ -17,6 +17,9 @@ class Course(SlugStampedModel):
     instructor = models.ForeignKey('instructors.Instructor', on_delete=models.CASCADE, related_name='courses')
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="courses")
 
+    class Meta:
+        ordering = ['-id']
+
     def clean(self):
         super().clean()
         validate_start_date_less_than_end_date(self.start_date, self.end_date)
