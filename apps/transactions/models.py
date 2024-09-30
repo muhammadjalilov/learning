@@ -64,7 +64,7 @@ class Transactions(TimeStampedModel):
         return str(self.id)
 
 class Earnings(TimeStampedModel):
-    instructor = models.OneToOneField('instructors.Instructor', on_delete=models.CASCADE, related_name='earnings')
+    instructor = models.ForeignKey('instructors.Instructor', on_delete=models.CASCADE, related_name='earnings')
     gross_revenue = models.DecimalField(max_digits=10, decimal_places=2)
 
     class Meta:
