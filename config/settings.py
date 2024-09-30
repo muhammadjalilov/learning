@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+from datetime import timedelta
 from os.path import join
 from pathlib import Path
 
@@ -145,4 +146,6 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     "TOKEN_OBTAIN_SERIALIZER": "account.login.serializers.LoginSerializer",
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=10),
 }
