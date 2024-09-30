@@ -7,7 +7,7 @@ from apps.quizz.views import QuizViewSet, QuestionViewSet, ChoiceViewSet
 router = routers.DefaultRouter()
 router.register('quizzes', QuizViewSet, basename='quizzes')
 router.register('questions', QuestionViewSet, basename='questions')
-router.register('categories', ChoiceViewSet, basename='choices')
+router.register('choices', ChoiceViewSet, basename='choices')
 
 app_name = 'quizz'
 

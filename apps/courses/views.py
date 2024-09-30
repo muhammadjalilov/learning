@@ -14,6 +14,10 @@ class CoursesViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = CourseFilterBackend
 
+    def perform_create(self, serializer):
+        serializer.save(instructor=self.request.user.instructor)
+
+
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
@@ -23,7 +27,7 @@ class ChapterViewSet(ModelViewSet):
     queryset = Chapter.objects.all()
     serializer_class = ChapterSerializer
 
+
 class TopicViewSet(ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
-
