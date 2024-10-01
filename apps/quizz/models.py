@@ -9,7 +9,7 @@ class Quiz(SlugStampedModel):
     class Meta:
         verbose_name = 'Quiz'
         verbose_name_plural = 'Quizzes'
-
+    # feat
     def __str__(self):
         return self.name
 
