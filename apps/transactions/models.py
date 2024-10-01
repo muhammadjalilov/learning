@@ -8,6 +8,7 @@ class CreditCard(TimeStampedModel):
     card_number = models.CharField(max_length=16, unique=True)
     expired_date = models.DateField()
     cvv = models.CharField(max_length=3)
+    account = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='cards')
 
     class Meta:
         verbose_name = 'Credit Card'
@@ -19,10 +20,10 @@ class CreditCard(TimeStampedModel):
 
 
 class BillingAddress(TimeStampedModel):
+    name = models.CharField(max_length=128, verbose_name='Name on Invoice')
     country = models.CharField(max_length=30)
     address = models.TextField()
-    credit_cards = models.ManyToManyField(CreditCard, related_name='billing_addresses')
-    user = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='billing_addresses')
+    user = models.OneToOneField('account.Account', on_delete=models.CASCADE, related_name='billing_address')
 
     class Meta:
         verbose_name = 'Billing Address'
@@ -62,6 +63,7 @@ class Transactions(TimeStampedModel):
 
     def __str__(self):
         return str(self.id)
+
 
 class Earnings(TimeStampedModel):
     instructor = models.ForeignKey('instructors.Instructor', on_delete=models.CASCADE, related_name='earnings')
