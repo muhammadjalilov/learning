@@ -2,9 +2,10 @@ from decimal import Decimal
 
 from django.db.models import F, DecimalField, ExpressionWrapper
 from rest_framework import generics
+from rest_framework.viewsets import ModelViewSet
 
-from apps.transactions.models import Earnings
-from apps.transactions.serializers import EarningsSerializer
+from apps.transactions.models import Earnings, CreditCard, BillingAddress
+from apps.transactions.serializers import EarningsSerializer, CreditCardSerializer, BillingAddressSerializer
 
 
 class EarningsAPIView(generics.ListCreateAPIView):
@@ -33,3 +34,23 @@ class EarningsDetailAPIView(generics.RetrieveAPIView):
         ).filter(instructor=self.request.user.instructor)
 
         return queryset
+
+
+class CreditCardViewSet(ModelViewSet):
+    serializer_class = CreditCardSerializer
+
+    def get_queryset(self):
+        return CreditCard.objects.filter(account=self.request.user).all()
+
+    def perform_create(self, serializer):
+        serializer.save(account=self.request.user)
+
+
+class BillingAddressViewSet(ModelViewSet):
+    serializer_class = BillingAddressSerializer
+
+    def get_queryset(self):
+        return BillingAddress.objects.filter(user=self.request.user).all()
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
