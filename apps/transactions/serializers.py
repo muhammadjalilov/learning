@@ -42,7 +42,7 @@ class BillingAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BillingAddress
-        fields = ['id','name', 'country', 'address', 'cards']
+        fields = ['id', 'name', 'country', 'address', 'cards']
 
     def get_cards(self, obj):
         cards = obj.user.cards.all()
@@ -52,4 +52,4 @@ class BillingAddressSerializer(serializers.ModelSerializer):
 class InvoiceCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
-        fields = ['billing_address', 'course', 'credit_card']
+        fields = ['paid_status', 'billing_address', 'course', 'credit_card']
