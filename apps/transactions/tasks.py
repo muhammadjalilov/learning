@@ -1,3 +1,5 @@
+from django.db.models import Sum
+
 from config.celery import app
 from rest_framework.generics import get_object_or_404
 
@@ -13,3 +15,5 @@ def create_transaction_after_paid(invoice_id):
             user=invoice.user,
             invoice=invoice
         )
+
+

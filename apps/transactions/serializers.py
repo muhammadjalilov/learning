@@ -2,6 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
+from apps.courses.models import Course
 from apps.transactions.models import Earnings, CreditCard, BillingAddress, Invoice
 
 
@@ -50,6 +51,7 @@ class BillingAddressSerializer(serializers.ModelSerializer):
 
 
 class InvoiceCreateSerializer(serializers.ModelSerializer):
+    course = serializers.PrimaryKeyRelatedField(many=True, queryset=Course.objects.all())
     class Meta:
         model = Invoice
-        fields = ['paid_status', 'billing_address', 'course', 'credit_card']
+        fields = ['billing_address', 'course', 'credit_card']

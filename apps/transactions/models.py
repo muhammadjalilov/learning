@@ -19,7 +19,6 @@ class CreditCard(TimeStampedModel):
         return self.card_number
 
 
-
 class BillingAddress(TimeStampedModel):
     name = models.CharField(max_length=128, verbose_name='Name on Invoice')
     country = models.CharField(max_length=30)
@@ -39,7 +38,7 @@ class Invoice(TimeStampedModel):
     paid_status = models.BooleanField(default=False)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     billing_address = models.ForeignKey(BillingAddress, on_delete=models.CASCADE, related_name='invoices')
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='invoices')
+    course = models.ManyToManyField(Course, related_name='invoices')
     credit_card = models.ForeignKey(CreditCard, on_delete=models.CASCADE, related_name='invoices')
     user = models.ForeignKey('account.Account', on_delete=models.CASCADE, related_name='invoices')
 

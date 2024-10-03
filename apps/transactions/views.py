@@ -1,6 +1,6 @@
 from decimal import Decimal
 
-from django.db.models import F, DecimalField, ExpressionWrapper
+from django.db.models import F, DecimalField, ExpressionWrapper, Sum
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
@@ -65,7 +65,12 @@ class InvoiceCreateAPIView(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         course = serializer.validated_data.get('course')
+        course_ids = 0
+        if isinstance(course, list) and all(isinstance(course, Course) for course in course):
+            course_ids = [course.id for course in course]
+
+        total_amount = Course.objects.filter(id__in=course_ids).aggregate(Sum('price'))['price__sum'] or 0
         serializer.save(
-            amount=course.price,
-            user=self.request.user
+            user=self.request.user,
+            amount=total_amount
         )
