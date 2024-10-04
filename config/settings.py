@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'apps.shared',
     'apps.students',
     'apps.transactions',
+    'apps.newsletter'
 ]
 
 MIDDLEWARE = [

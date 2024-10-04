@@ -29,5 +29,6 @@ urlpatterns = [
     path('api/', include('apps.account.urls.v1')),
     path('api/', include('apps.transactions.urls.v1')),
     path('api/', include('apps.chat.urls.v1')),
+    path('api/', include('apps.newsletter.urls.v1')),
 ]
 urlpatterns += swagger_urlpatterns
