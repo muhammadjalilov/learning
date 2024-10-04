@@ -12,10 +12,11 @@ class Room(SlugStampedModel):
     def __str__(self):
         return self.name
 
+
 class Message(TimeStampedModel):
     body = models.TextField()
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='messages')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
 
     class Meta:
         verbose_name = 'Message'
@@ -23,4 +24,3 @@ class Message(TimeStampedModel):
 
     def __str__(self):
         return self.body
-
