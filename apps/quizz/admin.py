@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import StackedInline
 
-from apps.quizz.models import Quiz, Question, Choice
+from apps.quizz.models import Quiz, Question, Answer
 
 
 class QuestionInline(StackedInline):
@@ -9,8 +9,8 @@ class QuestionInline(StackedInline):
     extra = 1
 
 
-class ChoiceInline(StackedInline):
-    model = Choice
+class AnswerInline(StackedInline):
+    model = Answer
     extra = 1
 
 
@@ -23,9 +23,9 @@ class QuizAdmin(admin.ModelAdmin):
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ['question']
-    inlines = [ChoiceInline]
+    inlines = [AnswerInline]
 
 
-@admin.register(Choice)
+@admin.register(Answer)
 class ChoiceAdmin(admin.ModelAdmin):
-    list_display = ['right_answer']
+    list_display = ['question', 'is_correct']

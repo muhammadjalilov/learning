@@ -1,17 +1,30 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
-from apps.quizz.models import Quiz, Question, Choice
-from apps.quizz.serializers import QuizSerializer, QuestionSerializer, ChoiceSerializer
+from apps.quizz.models import Quiz, QuizAttempt
+from apps.quizz.serializers import QuizSerializer, QuizAttemptSerializer
 
 
 class QuizViewSet(viewsets.ModelViewSet):
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
 
-class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.all()
-    serializer_class = QuestionSerializer
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
 
-class ChoiceViewSet(viewsets.ModelViewSet):
-    queryset = Choice.objects.all()
-    serializer_class = ChoiceSerializer
+
+class QuizAttemptViewSet(viewsets.ModelViewSet):
+    queryset = QuizAttempt.objects.all()
+    serializer_class = QuizAttemptSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        attempt = serializer.save()
+
+        return Response({
+            'message': 'Quiz completed successfully!',
+            'score': attempt.score,
+            'completed_at': attempt.completed_at,
+        }, status=status.HTTP_201_CREATED)
+
