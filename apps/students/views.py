@@ -8,6 +8,7 @@ from apps.courses.models import Course
 from apps.courses.serializers import CoursesSerializer
 from apps.students.models import Student
 from apps.students.serializers import StudentSerializer
+from config.permissions import IsStudentOrReadOnly
 
 
 class StudentCreateAPIView(CreateAPIView):
@@ -24,6 +25,7 @@ class StudentDetailAPIView(RetrieveUpdateDestroyAPIView):
 
 class StudentCoursesList(generics.ListAPIView):
     serializer_class = CoursesSerializer
+    permission_classes = [IsStudentOrReadOnly]
 
     def get_queryset(self):
         queryset = Course.objects.filter(students=self.request.user.student)
@@ -31,6 +33,7 @@ class StudentCoursesList(generics.ListAPIView):
 
 class StudentCourseRetrieve(generics.RetrieveAPIView):
     serializer_class = CoursesSerializer
+    permission_classes = [IsStudentOrReadOnly]
 
     def get_queryset(self):
         queryset = Course.objects.filter(students=self.request.user.student)
