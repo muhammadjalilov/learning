@@ -9,8 +9,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id','account', 'subscription_type']
-
+        fields = ['id', 'account', 'subscription_type']
 
     def create(self, validated_data):
         account_data = validated_data.pop('account', None)

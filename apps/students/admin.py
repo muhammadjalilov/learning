@@ -5,7 +5,7 @@ from apps.students.models import Student, Certificate, Reward
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ("period",)
 
 @admin.register(Certificate)
 class CertificateAdmin(admin.ModelAdmin):
