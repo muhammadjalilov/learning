@@ -13,7 +13,7 @@ class Student(TimeStampedModel):
     subscription_type = models.CharField(max_length=128, choices=AccountSubscriptions,
                                          default=AccountSubscriptions.STARTER)
     period = models.DateTimeField(null=True, blank=True)
-    courses = models.ManyToManyField(Course)
+    courses = models.ManyToManyField(Course,related_name='students')
 
     class Meta:
         verbose_name = 'Student'

@@ -1,3 +1,4 @@
+from django.template.context_processors import request
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.viewsets import ModelViewSet
 
@@ -13,6 +14,10 @@ class CoursesViewSet(ModelViewSet):
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = CourseFilterBackend
+
+    def get_queryset(self):
+        return self.queryset.filter(instructor=self.request.user.instructor)
+
 
     def perform_create(self, serializer):
         serializer.save(instructor=self.request.user.instructor)
@@ -31,3 +36,5 @@ class ChapterViewSet(ModelViewSet):
 class TopicViewSet(ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
+
+
