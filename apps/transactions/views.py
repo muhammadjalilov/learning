@@ -1,11 +1,14 @@
 from decimal import Decimal
 
-from django.db.models import F, DecimalField, ExpressionWrapper
+from django.db.models import F, DecimalField, ExpressionWrapper, Sum
 from rest_framework import generics
+from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 
-from apps.transactions.models import Earnings, CreditCard, BillingAddress
-from apps.transactions.serializers import EarningsSerializer, CreditCardSerializer, BillingAddressSerializer
+from apps.courses.models import Course
+from apps.transactions.models import Earnings, CreditCard, BillingAddress, Invoice
+from apps.transactions.serializers import EarningsSerializer, CreditCardSerializer, BillingAddressSerializer, \
+    InvoiceCreateSerializer
 
 
 class EarningsAPIView(generics.ListCreateAPIView):
@@ -54,3 +57,20 @@ class BillingAddressViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class InvoiceCreateAPIView(generics.CreateAPIView):
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceCreateSerializer
+
+    def perform_create(self, serializer):
+        course = serializer.validated_data.get('course')
+        course_ids = 0
+        if isinstance(course, list) and all(isinstance(course, Course) for course in course):
+            course_ids = [course.id for course in course]
+
+        total_amount = Course.objects.filter(id__in=course_ids).aggregate(Sum('price'))['price__sum'] or 0
+        serializer.save(
+            user=self.request.user,
+            amount=total_amount
+        )

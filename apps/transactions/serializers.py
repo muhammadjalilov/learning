@@ -2,7 +2,8 @@ from django.utils import timezone
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from apps.transactions.models import Earnings, CreditCard, BillingAddress
+from apps.courses.models import Course
+from apps.transactions.models import Earnings, CreditCard, BillingAddress, Invoice
 
 
 class EarningsSerializer(serializers.ModelSerializer):
@@ -18,6 +19,7 @@ class EarningsSerializer(serializers.ModelSerializer):
 
 class CreditCardSerializer(serializers.ModelSerializer):
     updated = serializers.SerializerMethodField()
+
     class Meta:
         model = CreditCard
         exclude = ['account']
@@ -32,7 +34,7 @@ class CreditCardSerializer(serializers.ModelSerializer):
             raise ValidationError('It should contains 3 numbers!')
         return cvv
 
-    def get_updated(self,obj):
+    def get_updated(self, obj):
         return timezone.now() - obj.updated_at
 
 
@@ -41,8 +43,15 @@ class BillingAddressSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BillingAddress
-        fields = ['name', 'country', 'address', 'cards']
+        fields = ['id', 'name', 'country', 'address', 'cards']
 
     def get_cards(self, obj):
         cards = obj.user.cards.all()
-        return CreditCardSerializer(cards,many=True).data
+        return CreditCardSerializer(cards, many=True).data
+
+
+class InvoiceCreateSerializer(serializers.ModelSerializer):
+    course = serializers.PrimaryKeyRelatedField(many=True, queryset=Course.objects.all())
+    class Meta:
+        model = Invoice
+        fields = ['billing_address', 'course', 'credit_card']
