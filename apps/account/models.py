@@ -27,3 +27,8 @@ class EmailNotification(TimeStampedModel):
 
     def __str__(self):
         return f"{self.account}-{self.notification}"
+
+
+class PasswordReset(TimeStampedModel):
+    email = models.EmailField()
+    token = models.CharField(max_length=100)
