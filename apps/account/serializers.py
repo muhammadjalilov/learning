@@ -10,7 +10,7 @@ class AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Account
-        fields = ['username', 'first_name', 'last_name', 'website', 'avatar', 'is_subscribed_newsletter',
+        fields = ['username', 'first_name', 'last_name', 'email', 'website', 'avatar', 'is_subscribed_newsletter',
                   'password', 'confirm_password']
         extra_kwargs = {
             'password': {"write_only": True},
@@ -25,6 +25,12 @@ class AccountSerializer(serializers.ModelSerializer):
             raise ValidationError('Passwords should match')
 
         return attrs
+
+    def validate_email(self, email):
+        if email:
+            if Account.objects.filter(email=email).exists():
+                raise ValidationError('This email already existed')
+        return email
 
     def create(self, validated_data):
         password = validated_data.pop('password')

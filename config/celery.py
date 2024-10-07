@@ -18,7 +18,17 @@ app.conf.beat_schedule = {
     "send-notification": {
         "task": "apps.students.tasks.send_notification_for_expired_subscriptions",
         "schedule": crontab(minute=11, hour=15),
-    }, }
+    },
+    "send-email-fill-notification": {
+        "task": "apps.account.tasks.email_request_notification",
+        "schedule": crontab(minute=58, hour=10),
+    },
+    "delete-email-notifications": {
+        "task": "apps.account.tasks.delete_notifications_for_filled_emails",
+        "schedule": crontab(minute=10, hour=11),
+    },
+
+}
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
 broker_connection_retry_on_startup = True
