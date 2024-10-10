@@ -18,7 +18,7 @@ class StudentCreateAPIView(CreateAPIView):
 
 
 class StudentDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Student.objects.all()
+    queryset = Student.objects.all().select_related('account')
     serializer_class = StudentSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
@@ -28,7 +28,7 @@ class StudentCoursesList(generics.ListAPIView):
     permission_classes = [IsStudentOrReadOnly]
 
     def get_queryset(self):
-        queryset = Course.objects.filter(students=self.request.user.student)
+        queryset = Course.objects.filter(students=self.request.user.student).prefetch_related('students')
         return queryset
 
 class StudentCourseRetrieve(generics.RetrieveAPIView):
@@ -36,5 +36,5 @@ class StudentCourseRetrieve(generics.RetrieveAPIView):
     permission_classes = [IsStudentOrReadOnly]
 
     def get_queryset(self):
-        queryset = Course.objects.filter(students=self.request.user.student)
+        queryset = Course.objects.filter(students=self.request.user.student).prefetch_related('students')
         return queryset
