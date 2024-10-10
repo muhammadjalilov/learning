@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import TabularInline
 
-from apps.forum.models import Post, Answer
+from apps.forum.models import ForumPost, Answer
 
 
 class AnswerInline(TabularInline):
@@ -9,9 +9,9 @@ class AnswerInline(TabularInline):
     extra = 1
 
 
-@admin.register(Post)
+@admin.register(ForumPost)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['question', 'user', 'course']
+    list_display = ['question', 'user']
     inlines = [AnswerInline]
 
 
