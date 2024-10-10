@@ -16,7 +16,7 @@ class InstructorCreateAPIView(CreateAPIView):
 
 
 class InstructorDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Instructor.objects.all()
+    queryset = Instructor.objects.all().select_related('account')
     serializer_class = InstructorSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 

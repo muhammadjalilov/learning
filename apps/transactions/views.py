@@ -48,7 +48,7 @@ class CreditCardViewSet(ModelViewSet):
     permission_classes = [IsOwner]
 
     def get_queryset(self):
-        return CreditCard.objects.filter(account=self.request.user).all()
+        return CreditCard.objects.filter(account=self.request.user).all().select_related('account')
 
     def perform_create(self, serializer):
         serializer.save(account=self.request.user)
@@ -59,7 +59,7 @@ class BillingAddressViewSet(ModelViewSet):
     permission_classes = [IsOwner]
 
     def get_queryset(self):
-        return BillingAddress.objects.filter(user=self.request.user).all()
+        return BillingAddress.objects.filter(account=self.request.user).all().select_related('account')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
