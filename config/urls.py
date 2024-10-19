@@ -30,6 +30,8 @@ urlpatterns = [
     path('api/', include('apps.transactions.urls.v1')),
     path('api/', include('apps.chat.urls.v1')),
     path('api/', include('apps.newsletter.urls.v1')),
+    path('api/', include('apps.blog.urls.v1')),
+    path('api/', include('apps.forum.urls.v1')),
 ]
 urlpatterns += swagger_urlpatterns
 urlpatterns += debug_toolbar_urls()
