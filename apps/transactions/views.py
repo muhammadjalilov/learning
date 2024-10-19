@@ -5,14 +5,17 @@ from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 
+from apps.account.permissions import IsOwnerOrReadOnly, IsOwner
 from apps.courses.models import Course
 from apps.transactions.models import Earnings, CreditCard, BillingAddress, Invoice
 from apps.transactions.serializers import EarningsSerializer, CreditCardSerializer, BillingAddressSerializer, \
     InvoiceCreateSerializer
+from config.permissions import IsStaffUserOrReadOnly, IsInstructorOrReadOnly
 
 
 class EarningsAPIView(generics.ListCreateAPIView):
     serializer_class = EarningsSerializer
+    permission_classes = [IsStaffUserOrReadOnly]
 
     def get_queryset(self):
         queryset = Earnings.objects.annotate(
@@ -27,6 +30,7 @@ class EarningsAPIView(generics.ListCreateAPIView):
 
 class EarningsDetailAPIView(generics.RetrieveAPIView):
     serializer_class = EarningsSerializer
+    permission_classes = [IsInstructorOrReadOnly]
 
     def get_queryset(self):
         queryset = Earnings.objects.annotate(
@@ -41,9 +45,10 @@ class EarningsDetailAPIView(generics.RetrieveAPIView):
 
 class CreditCardViewSet(ModelViewSet):
     serializer_class = CreditCardSerializer
+    permission_classes = [IsOwner]
 
     def get_queryset(self):
-        return CreditCard.objects.filter(account=self.request.user).all()
+        return CreditCard.objects.filter(account=self.request.user).all().select_related('account')
 
     def perform_create(self, serializer):
         serializer.save(account=self.request.user)
@@ -51,9 +56,10 @@ class CreditCardViewSet(ModelViewSet):
 
 class BillingAddressViewSet(ModelViewSet):
     serializer_class = BillingAddressSerializer
+    permission_classes = [IsOwner]
 
     def get_queryset(self):
-        return BillingAddress.objects.filter(user=self.request.user).all()
+        return BillingAddress.objects.filter(account=self.request.user).all().select_related('account')
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -62,6 +68,7 @@ class BillingAddressViewSet(ModelViewSet):
 class InvoiceCreateAPIView(generics.CreateAPIView):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceCreateSerializer
+    permission_classes = [IsStaffUserOrReadOnly]
 
     def perform_create(self, serializer):
         course = serializer.validated_data.get('course')

@@ -20,3 +20,21 @@ class StudentInline(TabularInline):
 class AccountAdmin(admin.ModelAdmin):
     list_display = ['id', 'username']
     inlines = [InstructorInline, StudentInline]
+    fieldsets = (
+        (None, {
+            "fields": ("first_name", "last_name", "username", "email", "password")
+        }
+         ),
+        ("Permissions", {
+            "fields": ("user_permissions", "groups", "is_superuser", "is_staff")
+        }
+         ),
+        ("Important Date", {
+            "fields": ("last_login",)
+        })
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'password1', 'password2'), }),)
+    readonly_fields = ("last_login",)

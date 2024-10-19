@@ -23,7 +23,7 @@ class BillingAddress(TimeStampedModel):
     name = models.CharField(max_length=128, verbose_name='Name on Invoice')
     country = models.CharField(max_length=30)
     address = models.TextField()
-    user = models.OneToOneField('account.Account', on_delete=models.CASCADE, related_name='billing_address')
+    account = models.OneToOneField('account.Account', on_delete=models.CASCADE, related_name='billing_address')
 
     class Meta:
         verbose_name = 'Billing Address'

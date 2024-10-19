@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.db import models
 
 from apps.account.choices import AccountSubscriptions
@@ -7,14 +9,25 @@ from apps.shared.models import SlugStampedModel, TimeStampedModel
 
 
 class Student(TimeStampedModel):
-    account = models.OneToOneField('account.Account',on_delete=models.CASCADE)
+    account = models.OneToOneField('account.Account', on_delete=models.CASCADE)
     subscription_type = models.CharField(max_length=128, choices=AccountSubscriptions,
                                          default=AccountSubscriptions.STARTER)
-    courses = models.ManyToManyField(Course)
+    period = models.DateTimeField(null=True, blank=True)
+    courses = models.ManyToManyField(Course,related_name='students')
 
     class Meta:
         verbose_name = 'Student'
         verbose_name_plural = 'Students'
+
+    def save(self, *args, **kwargs):
+        if self.subscription_type == AccountSubscriptions.STARTER:
+            self.period = None
+        elif self.subscription_type == AccountSubscriptions.LEARNER:
+            self.period = datetime.now() + timedelta(days=40)
+        elif self.subscription_type == AccountSubscriptions.MASTER:
+            self.period = datetime.now() + timedelta(days=100)
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return str(self.account.get_full_name())
