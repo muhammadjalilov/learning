@@ -46,7 +46,7 @@ class BillingAddressSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'country', 'address', 'cards']
 
     def get_cards(self, obj):
-        cards = obj.user.cards.all()
+        cards = obj.account.cards.all()
         return CreditCardSerializer(cards, many=True).data
 
 

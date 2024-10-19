@@ -1,4 +1,9 @@
+
 from django.urls import path
+from django.urls import re_path, path
+from drf_yasg.inspectors import SwaggerAutoSchema
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from drf_yasg.generators import OpenAPISchemaGenerator
 from drf_yasg.views import get_schema_view
@@ -26,6 +31,15 @@ class BothHttpAndHttpsSchemaGenerator(OpenAPISchemaGenerator):
         operation.parameters.append(lang_header)
         return operation
 
+
+class CustomAutoSchema(SwaggerAutoSchema):
+
+    def get_tags(self, operation_keys=None):
+        tags = self.overrides.get("tags", None) or getattr(self.view, "my_tags", [])
+        if not tags:
+            tags = [operation_keys[0]]
+
+        return tags
 
 schema_view = get_schema_view(
     openapi.Info(

@@ -14,7 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
 from django.urls import path, include
 
@@ -30,5 +30,8 @@ urlpatterns = [
     path('api/', include('apps.transactions.urls.v1')),
     path('api/', include('apps.chat.urls.v1')),
     path('api/', include('apps.newsletter.urls.v1')),
+    path('api/', include('apps.blog.urls.v1')),
+    path('api/', include('apps.forum.urls.v1')),
 ]
 urlpatterns += swagger_patterns
+urlpatterns += debug_toolbar_urls()
